@@ -104,15 +104,15 @@ export function ExpenseForm() {
         }
     };
 
-    const commonInputStyle = "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
+    const commonInputStyle = "bg-primary-foreground mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm";
     const errorTextStyle = "mt-1 text-sm text-red-600";
-    const labelStyle = "block text-sm font-medium text-gray-700";
+    const labelStyle = "block text-sm font-medium text-chart-4";
 
     return (
-        <div className="w-full p-4 border border-gray-200 rounded-lg shadow-md">
+        <div className="w-full p-4 border border-gray-200 rounded-lg shadow-md bg-card">
             <header className="mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">New Expense Report</h2>
-                <p className="text-sm text-gray-600">Fill in the details of your expense and upload the receipt.</p>
+                <h2 className="text-xl font-semibold">New Expense Report</h2>
+                <p className="text-sm">Fill in the details of your expense and upload the receipt.</p>
             </header>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -205,7 +205,7 @@ export function ExpenseForm() {
                         accept=".pdf,image/jpeg,image/png,image/webp,image/jpg"
                         {...register("receipt")} // onChange is implicitly handled by RHF to update form state
                         onChange={handleReceiptChange} // Custom onChange for additional logic like fileName
-                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-chart-5 file:text-popover hover:file:bg-chart-4"
                         aria-invalid={errors.receipt ? "true" : "false"}
                     />
                     <p className="mt-1 text-xs text-gray-500">{selectedFileName}</p>
@@ -222,7 +222,7 @@ export function ExpenseForm() {
                     <p className={errorTextStyle}>{serverState.errors.general.join(', ')}</p>
                 )}
 
-                <button type="submit" className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50" disabled={isPending}>
+                <button type="submit" className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-chart-5 hover:bg-chart-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50" disabled={isPending}>
                     {isPending ? "Submitting..." : "Submit Expense"}
                 </button>
             </form>
