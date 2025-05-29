@@ -1,8 +1,7 @@
-
 "use client";
 
 import type { ChangeEvent } from 'react';
-import { useState, useEffect, useActionState } from 'react';
+import { useState, useEffect, useActionState, startTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -70,24 +69,25 @@ export function ExpenseForm() {
         }
     }, [serverState, reset, setError]);
 
-    const onSubmit = (values: ExpenseFormValues) => { // No async here, formAction is called
+    const onSubmit = (values: ExpenseFormValues) => {
         const formData = new FormData();
-        formData.append('name', values.name);
+        formData.append("name", values.name);
         if (values.date) {
-            // react-hook-form with valueAsDate: true gives a Date object
-            // Server action expects ISO string
-            formData.append('date', values.date.toISOString());
+            formData.append("date", values.date.toISOString());
         }
-        formData.append('amount', String(values.amount));
-        formData.append('description', values.description);
-        formData.append('email', values.email);
-        formData.append('portfolio', values.portfolio); // This is a string e.g. "events"
+        formData.append("amount", String(values.amount));
+        formData.append("description", values.description);
+        formData.append("email", values.email);
+        formData.append("portfolio", values.portfolio);
 
         if (values.receipt && values.receipt.length > 0) {
-            formData.append('receipt', values.receipt[0]);
+            formData.append("receipt", values.receipt[0]);
         }
 
-        formAction(formData); // Call the action
+        // Wrap formAction in startTransition
+        startTransition(() => {
+            formAction(formData);
+        });
     };
 
     const handleReceiptChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +109,7 @@ export function ExpenseForm() {
     const labelStyle = "block text-sm font-medium text-gray-700";
 
     return (
-        <div className="w-full p-4 border border-gray-200 rounded-lg shadow-md bg-white">
+        <div className="w-full p-4 border border-gray-200 rounded-lg shadow-md">
             <header className="mb-4">
                 <h2 className="text-xl font-semibold text-gray-800">New Expense Report</h2>
                 <p className="text-sm text-gray-600">Fill in the details of your expense and upload the receipt.</p>
@@ -191,13 +191,7 @@ export function ExpenseForm() {
                         id="email"
                         type="email"
                         placeholder="E-transfer email"
-                        {...register("email", {
-                            required: "Email is required",
-                            pattern: {
-                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                message: "Invalid email format"
-                            }
-                        })}
+                        {...register("email")}
                         className={commonInputStyle}
                         aria-invalid={errors.email ? "true" : "false"}
                     />

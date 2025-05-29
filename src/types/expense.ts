@@ -42,19 +42,14 @@ export const expenseSchema = z.object({
 	portfolio: z.enum(PORTFOLIO_VALUES, {
 		errorMap: () => ({ message: "Invalid portfolio selection." }),
 	}),
-	receipt: z
-		.custom<FileList>()
-		.optional() // Made optional
+	receipt: z.custom<FileList>()
+		.optional()
 		.refine(
-			(files) =>
-				!files || files.length === 0 || files[0]?.size <= MAX_FILE_SIZE, // Validate size only if files exist
+			(files) => !files || files.length === 0 || (files[0]?.size <= MAX_FILE_SIZE),
 			`Receipt must be less than ${MAX_FILE_SIZE / 1024 / 1024}MB.`
 		)
 		.refine(
-			(files) =>
-				!files ||
-				files.length === 0 ||
-				ALLOWED_FILE_TYPES.includes(files[0]?.type), // Validate type only if files exist
+			(files) => !files || files.length === 0 || (ALLOWED_FILE_TYPES.includes(files[0]?.type)),
 			"Only PDF, JPG, PNG, WEBP files are allowed."
 		),
 });

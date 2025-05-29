@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
     title: "COMPSA Reimbursement Form",
-    description: "A next.js app for submitting reimbursement requests",
+    description: "Submitting reimbursement requests",
 };
 
 export default function RootLayout({
@@ -27,20 +27,18 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <div>
-                    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-                        <div className="flex items-center justify-between space-y-2">
-                            <div>
-                                <a href="https://compsa.ca/logo.svg"></a>
-                                <h1 className="text-4xl font-bold mb-6">Expense Reimbursement</h1>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <h1>Admin Login</h1>
-                            </div>
+                <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+                    <div className="flex items-center justify-between space-y-2">
+                        <div>
+                            <a href="https://compsa.ca/logo.svg"></a>
+                            <h1 className="text-4xl font-bold mb-6">Expense Reimbursement</h1>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <h1>Admin Login</h1>
                         </div>
                     </div>
                 </div>
-                {children}
+                <div className="">{children}</div>
             </body>
         </html>
     );
