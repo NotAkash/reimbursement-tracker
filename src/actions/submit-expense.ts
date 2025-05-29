@@ -50,9 +50,8 @@ export async function submitExpense(
 	};
 	// --- Firebase Integration Placeholder ---
 	console.log("Attempting Firebase submission with validated data:", expenseData);
-	const db = getDatabase(); // Get the database instance
 	// Get a reference to the "expenses" node where you want to push data
-	const expensesRef = ref(db, "expenses");
+	const expensesRef = ref(rtdb, "expenses");
 
 	// Use push() on the reference to add a new item with a unique key
 	push(expensesRef, expenseData)
