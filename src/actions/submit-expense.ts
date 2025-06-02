@@ -12,7 +12,7 @@ export async function submitExpense(
 	// Get raw form data, including the file
 	const rawFormData = {
 		name: formData.get("name"),
-		date: formData.get("date") ? new Date(formData.get("date") as string) : null,
+		date: formData.get("date") ? new Date(formData.get("date") as string) : "empty",
 		amount: formData.get("amount"),
 		description: formData.get("description"),
 		email: formData.get("email"),
@@ -39,12 +39,12 @@ export async function submitExpense(
 	const receiptName =
 		receipt && receipt.length > 0 ? receipt[0].name : undefined;
 
-	const expenseData = {
-		name,
-		date,
+	const expenseData = { 
 		amount,
+		date:(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`).toString(),
 		description,
 		email,
+		name,
 		portfolio,
         status: "submitted", // Default status for all new entries
 	};
