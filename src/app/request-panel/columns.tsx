@@ -3,6 +3,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Records, Record } from "@/types/records";
+import { ArrowUpDown } from "lucide-react"
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,7 +21,7 @@ export type Request = {
     id: string
     title: string
     amount: number
-    status: "pending" | "approved" | "rejected"
+    status: "submitted" | "approved" | "completed"
     submittedDate: Date
     category: string
 }
@@ -27,11 +29,11 @@ export type Request = {
 export const columns: ColumnDef<Record>[] = [
     {
         accessorKey: "name",
-        header: "Name",
+        header: () => <div className="text-center">Name</div>,
     },
     {
         accessorKey: "amount",
-        header: () => <div className="text-right">Amount</div>,
+        header: () => <div className="text-center">Amount</div>,
         cell: ({ row }) => {
             const amount = parseFloat(row.getValue("amount"))
             const formatted = new Intl.NumberFormat("en-US", {
@@ -44,25 +46,62 @@ export const columns: ColumnDef<Record>[] = [
     },
     {
         accessorKey: "description",
-        header: "Description",
+        header: () => <div className="text-center">Description</div>,
+    },
+    {
+        accessorKey: "email",
+        header: () => <div className="text-center">Email</div>,
+    },
+    {
+        accessorKey: "date",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Date
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
     },
     {
         accessorKey: "portfolio",
-        header: "Portfolio",
+        header: () => <div className="text-center">Portfolio</div>,
+        cell: ({ row }) => {
+            const Portfolio = String(row.getValue("portfolio"));
+
+            return <div className="text-right font-medium">{Portfolio.charAt(0).toUpperCase() + Portfolio.slice(1)}</div>
+        },
     },
     {
         accessorKey: "status",
-        header: "Status",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Status
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+
+        cell: ({ row }) => {
+            const Status = String(row.getValue("status"));
+            return <div className="text-right font-medium">{Status.charAt(0).toUpperCase() + Status.slice(1)}</div>
+        },
     },
     {
         id: "actions",
         cell: ({ row }) => {
             const record = row.original;
             const handleEdit = async (statusUpdate: string) => {
-                console.log(`Approving record with ID: ${record.id}`);
+                console.log(`Editing record with ID: ${record.id}`);
                 try {
                     await editExpense(record.id, statusUpdate); // Call the edit function with new status
-                    alert("Record approved successfully!");
                     window.location.reload(); // Refresh the page to reflect the change
                 } catch (error) {
                     console.error("Error approving record:", error);
@@ -70,7 +109,7 @@ export const columns: ColumnDef<Record>[] = [
                 }
             };
             const handleDelete = async () => {
-                console.log(`Deleting record with ID: ${record.id}`);
+                console.log(`Reject record with ID: ${record.id}`);
                 try {
                     await deleteExpense(record.id); // Call the delete function
                     alert("Record deleted successfully!"); // Optional: Show success message
@@ -102,7 +141,7 @@ export const columns: ColumnDef<Record>[] = [
                         <DropdownMenuItem onClick={() => handleEdit("Completed")}>
                             Completed
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleDelete}>Reject (Delete)</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
