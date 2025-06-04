@@ -1,4 +1,9 @@
 "use client";
+
+/**
+ * ExpenseTable component for displaying and managing expenses.
+ * Everything here is sourced from: https://ui.shadcn.com/docs/components/data-table
+ */
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -70,19 +75,19 @@ export default function ExpenseTable<TData, TValue>({
 
     return (
         <div>
-            <div className="flex items-center py-4">
+            <div className="flex items-center py-1">
                 <Input
                     placeholder="Filter emails..."
                     value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("email")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="max-w-sm bg-card text-black placeholder:text-chart-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 />
             </div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="ml-auto">
+                    <Button variant="outline" className="ml-auto bg-card my-4">
                         Columns
                     </Button>
                 </DropdownMenuTrigger>
@@ -110,7 +115,7 @@ export default function ExpenseTable<TData, TValue>({
             </DropdownMenu>
 
             <div className="rounded-md border bg-card text-chart-4 text-center">
-                <Table>
+                <Table className="w-full table-fixed"> 
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -153,7 +158,7 @@ export default function ExpenseTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex items-center justify-end space-x-2 py-4 text-white">
                 <Button
                     variant="outline"
                     size="sm"
