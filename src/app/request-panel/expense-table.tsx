@@ -37,6 +37,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 interface ExpenseTableProps<TData, TValue> {
@@ -115,48 +116,50 @@ export default function ExpenseTable<TData, TValue>({
             </DropdownMenu>
 
             <div className="rounded-md border bg-card text-chart-4 text-center">
-                <Table className="w-full table-fixed"> 
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </TableCell>
-                                    ))}
+            <ScrollArea className="rounded-md border overflow-x-auto">
+                    <Table className="w-full table-fixed min-w-auto">
+                        <TableHeader className="sticky top-0 z-10 bg-card">
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <TableRow key={headerGroup.id}>
+                                    {headerGroup.headers.map((header) => {
+                                        return (
+                                            <TableHead className="min-w-[200px] px-2 py-2" key={header.id}>
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(
+                                                        header.column.columnDef.header,
+                                                        header.getContext()
+                                                    )}
+                                            </TableHead>
+                                        )
+                                    })}
                                 </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
+                            ))}
+                        </TableHeader>
+                        <TableBody>
+                            {table.getRowModel().rows?.length ? (
+                                table.getRowModel().rows.map((row) => (
+                                    <TableRow
+                                        key={row.id}
+                                        data-state={row.getIsSelected() && "selected"}
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id} className="text-center ">
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </ScrollArea>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4 text-white">
                 <Button

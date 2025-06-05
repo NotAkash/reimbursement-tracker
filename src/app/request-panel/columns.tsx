@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
 import { deleteExpense, editExpense } from "@/actions/edit-expense";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 // Define the type for your request data
 export type Request = {
@@ -41,16 +42,35 @@ export const columns: ColumnDef<Record>[] = [
                 currency: "USD",
             }).format(amount)
 
-            return <div className="text-right font-medium">{formatted}</div>
+            return <div className="text-center font-medium">{formatted}</div>
         },
     },
     {
         accessorKey: "description",
         header: () => <div className="text-center">Description</div>,
+        cell: ({ row }) => {
+            const description = String(row.getValue("description"));
+            return (
+                <ScrollArea className="max-w-md rounded-md whitespace-nowrap">
+                    <div className="text-left text-sm">
+                        {description.length > 50 ? `${description.slice(0, 50)}...` : description}
+                    </div>
+                </ScrollArea>
+
+            )
+        }
     },
     {
         accessorKey: "email",
         header: () => <div className="text-center">Email</div>,
+        cell: ({ row }) => {
+            const email = String(row.getValue("email"));
+            return (
+                <div className="text-right text-sm">
+                    {email}
+                </div>
+            )
+        }
     },
     {
         accessorKey: "date",
