@@ -75,6 +75,7 @@ export default function ExpenseTable<TData, TValue>({
     })
 
     return (
+
         <div>
             <div className="flex items-center py-1">
                 <Input
@@ -116,14 +117,17 @@ export default function ExpenseTable<TData, TValue>({
             </DropdownMenu>
 
             <div className="rounded-md border bg-card text-chart-4 text-center">
-            <ScrollArea className="rounded-md border overflow-x-auto">
-                    <Table className="w-full table-fixed min-w-auto">
+                <ScrollArea className="rounded-md border h-[600px]"> {/* Set a fixed height */}
+                    <Table className="w-full">
                         <TableHeader className="sticky top-0 z-10 bg-card">
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <TableRow key={headerGroup.id}>
                                     {headerGroup.headers.map((header) => {
                                         return (
-                                            <TableHead className="min-w-[200px] px-2 py-2" key={header.id}>
+                                            <TableHead 
+                                                key={header.id}
+                                                className="px-2 py-2 w-[200px] break-words"
+                                            >
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
@@ -144,7 +148,10 @@ export default function ExpenseTable<TData, TValue>({
                                         data-state={row.getIsSelected() && "selected"}
                                     >
                                         {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id} className="text-center ">
+                                            <TableCell 
+                                                key={cell.id} 
+                                                className="px-2 py-2 w-[200px] break-words whitespace-normal"
+                                            >
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </TableCell>
                                         ))}
